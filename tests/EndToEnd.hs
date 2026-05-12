@@ -1,41 +1,45 @@
--- Golden snapshot tests for the example programs.
+-- Golden snapshot tests for full QuickSpec end-to-end runs.
 --
 -- Each example is built as a separate cabal executable
--- (`example-<lowername>`); this test suite execs each binary with a fixed
--- QuickCheck seed and diffs stdout against `tests/golden/<Name>.output`.
+-- (`example-<lowername>`); we exec it with a fixed QuickCheck seed and
+-- diff stdout against `tests/golden/<Name>.output`. We go through a
+-- subprocess (rather than linking the example in directly) because
+-- `quickSpec` drives QuickCheck with global state and prints to
+-- stdout — easier to isolate as a child process than to compose
+-- multiple runs inside one test binary.
 --
--- Update snapshots: cabal test golden --test-options=--accept
+-- Update snapshots: cabal test --test-options='-p /end-to-end/ --accept'
 
-module Main (main) where
+module EndToEnd (tests) where
 
 import qualified Data.ByteString.Lazy.Char8 as BL
 import Data.Char (toLower)
 import System.Environment (getEnvironment)
 import System.FilePath ((<.>), (</>))
 import System.Process (CreateProcess (..), proc, readCreateProcess)
-import Test.Tasty (TestTree, defaultMain, testGroup)
+import Test.Tasty (TestTree, testGroup)
 import Test.Tasty.Golden (goldenVsString)
 
 quickcheckSeed :: String
 quickcheckSeed = "1234"
 
--- Initial scaffold. To add an example:
+-- To add an example:
 --   1. Drop tests/<Name>.hs
 --   2. Add an `executable example-<lowername>` stanza in quickspec.cabal
---   3. Add it to `build-tool-depends` of the `golden` test-suite
+--   3. Add it to `build-tool-depends` of the `tests` test-suite
 --   4. Append the name here, then run with --accept to capture the golden
 examples :: [String]
 examples = ["Arith", "Lists"]
 
-main :: IO ()
-main = defaultMain $ testGroup "examples (golden)" (map mkCase examples)
+tests :: TestTree
+tests = testGroup "end-to-end" (map mkCase examples)
 
 mkCase :: String -> TestTree
 mkCase name =
   goldenVsString
-    name -- test name
-    ("tests" </> "golden" </> name <.> "output") -- File path
-    runExample -- IO ByteString -> TestTree
+    name
+    ("tests" </> "golden" </> "EndToEnd" </> name <.> "output")
+    runExample
   where
     bin = "example-" ++ map toLower name
     runExample = do

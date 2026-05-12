@@ -1,0 +1,18 @@
+test cases:
+  1
+  2
+  3
+  0
+  7
+
+insertions:
+insert x            -> Distinct
+insert x+0          -> EqualTo (Var)
+insert 2*x          -> Distinct
+insert x+x          -> EqualTo (Mul (Const 2) Var)
+insert x*x          -> Distinct
+insert x+1          -> Distinct
+insert partial x    -> Distinct
+
+statistics:
+Statistics {stat_num_terms = 4, stat_num_tests = 10, stat_num_test_cases = 5}
