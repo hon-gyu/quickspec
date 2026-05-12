@@ -115,3 +115,43 @@ library
     transformers,
     twee-lib >= 2.5 && < 2.6,
     uglymemo
+
+-- ============================================================================
+-- Example executables driven by the golden test suite below.
+-- Each example .hs file under tests/ is compiled to a `example-<name>`
+-- binary so the test suite can exec it directly (rather than going through
+-- runghc / cabal exec).
+-- ============================================================================
+
+executable example-arith
+  default-language: Haskell2010
+  hs-source-dirs:   tests
+  main-is:          Arith.hs
+  ghc-options:      -W -O
+  build-depends:    base >= 4.7 && < 5, quickspec
+
+executable example-lists
+  default-language: Haskell2010
+  hs-source-dirs:   tests
+  main-is:          Lists.hs
+  ghc-options:      -W -O
+  build-depends:    base >= 4.7 && < 5, quickspec
+
+test-suite golden
+  type:             exitcode-stdio-1.0
+  default-language: Haskell2010
+  hs-source-dirs:   tests
+  main-is:          Golden.hs
+  ghc-options:      -W
+  build-depends:
+    base >= 4.7 && < 5,
+    bytestring,
+    filepath,
+    process,
+    tasty,
+    tasty-golden
+  -- cabal builds these before running the test suite and puts them on
+  -- PATH, so Golden.hs can invoke them by name.
+  build-tool-depends:
+    quickspec:example-arith,
+    quickspec:example-lists
