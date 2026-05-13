@@ -90,8 +90,13 @@ output =
            show (statistics final)
          ]
   where
-    (final, logs) = run initial terms []
-    run dt [] acc = (dt, reverse acc)
-    run dt (x : xs) acc =
+    (final, logs) = run initial [] terms
+    run ::
+      DT ->
+      [String] -> -- prev logs
+      [(String, Term)] -> -- input
+      (DT, [String]) -- (DT, new logs)
+    run dt logs [] = (dt, reverse logs)
+    run dt logs (x : xs) =
       let (dt', line) = step dt x
-       in run dt' xs (line : acc)
+       in run dt' (line : logs) xs
