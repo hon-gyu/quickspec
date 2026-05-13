@@ -5,24 +5,25 @@
 -- case is just the integer result (occasionally Nothing to exercise the
 -- "untestable" branch).
 --
--- `output` is pure, so we hand it straight to tasty-golden — no
+-- `output` is pure, so we hand it straight to tasty-silver — no
 -- subprocess needed (cf. EndToEnd, which has to exec a real binary
 -- because it drives the full QuickSpec/QuickCheck pipeline).
 
 module DecisionTree (tests) where
 
-import qualified Data.ByteString.Lazy.Char8 as BL
+import qualified Data.Text as T
 import QuickSpec.Internal.Testing.DecisionTree
 import System.FilePath ((<.>), (</>))
 import Test.Tasty (TestTree)
-import Test.Tasty.Golden (goldenVsString)
+import Test.Tasty.Silver (goldenVsAction)
 
 tests :: TestTree
 tests =
-  goldenVsString
+  goldenVsAction
     "DecisionTree"
     ("tests" </> "golden" </> "DecisionTree" <.> "output")
-    (return (BL.pack output))
+    (return output)
+    T.pack
 
 data Term
   = Const Int

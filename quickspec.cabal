@@ -148,7 +148,8 @@ test-suite tests
     process,
     quickspec,
     tasty,
-    tasty-golden
+    tasty-silver,
+    text
   -- cabal builds these before running the test suite and puts them on
   -- PATH, so EndToEnd.hs can invoke them by name.
   build-tool-depends:

@@ -12,13 +12,13 @@
 
 module EndToEnd (tests) where
 
-import qualified Data.ByteString.Lazy.Char8 as BL
 import Data.Char (toLower)
+import qualified Data.Text as T
 import System.Environment (getEnvironment)
 import System.FilePath ((<.>), (</>))
 import System.Process (CreateProcess (..), proc, readCreateProcess)
 import Test.Tasty (TestTree, testGroup)
-import Test.Tasty.Golden (goldenVsString)
+import Test.Tasty.Silver (goldenVsAction)
 
 quickcheckSeed :: String
 quickcheckSeed = "1234"
@@ -36,10 +36,11 @@ tests = testGroup "end-to-end" (map mkCase examples)
 
 mkCase :: String -> TestTree
 mkCase name =
-  goldenVsString
+  goldenVsAction
     name
     ("tests" </> "golden" </> "EndToEnd" </> name <.> "output")
     runExample
+    T.pack
   where
     bin = "example-" ++ map toLower name
     runExample = do
@@ -48,4 +49,4 @@ mkCase name =
             (proc bin [])
               { env = Just (("QUICKCHECK_SEED", quickcheckSeed) : base)
               }
-      BL.pack <$> readCreateProcess cp ""
+      readCreateProcess cp ""
