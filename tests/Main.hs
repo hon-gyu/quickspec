@@ -16,6 +16,7 @@ module Main (main) where
 
 import qualified DecisionTree
 import qualified EndToEnd
+import qualified Type
 import Test.Tasty (defaultMain, testGroup)
 
 main :: IO ()
@@ -26,6 +27,7 @@ main =
       [ EndToEnd.tests,
         testGroup
           "internal"
-          [ DecisionTree.tests
+          [ DecisionTree.tests,
+            Type.tests
           ]
       ]

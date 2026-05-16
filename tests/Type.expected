@@ -1,0 +1,23 @@
+typeOf 
+==========
+TyCon Int
+TyCon Char
+TyCon Bool
+
+typeRep (via Proxy)
+==========
+TyCon Int
+TyCon List(TyCon Int)
+TyCon (,)(TyCon Int,TyCon Bool)
+Arrow(TyCon Int,TyCon Bool)
+
+type variables
+==========
+typeVar:            x0
+isTypeVar typeVar:  True
+isTypeVar Int:      False
+
+prettyShow vs show
+==========
+show:       Arrow(x0,x1)
+prettyShow: X -> Y

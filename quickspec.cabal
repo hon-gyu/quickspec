@@ -140,6 +140,8 @@ test-suite tests
   other-modules:
     DecisionTree
     EndToEnd
+    Type
+    Utils
   ghc-options:      -W
   build-depends:
     base >= 4.7 && < 5,
@@ -149,7 +151,8 @@ test-suite tests
     quickspec,
     tasty,
     tasty-silver,
-    text
+    text,
+    twee-lib >= 2.5 && < 2.6
   -- cabal builds these before running the test suite and puts them on
   -- PATH, so EndToEnd.hs can invoke them by name.
   build-tool-depends:
