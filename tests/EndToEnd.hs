@@ -32,13 +32,13 @@ examples :: [String]
 examples = ["Arith", "Lists"]
 
 tests :: TestTree
-tests = testGroup "end-to-end" (map mkCase examples)
+tests = testGroup "EndToEnd" (map mkCase examples)
 
 mkCase :: String -> TestTree
 mkCase name =
   goldenVsAction
     name
-    ("tests" </> "golden" </> "EndToEnd" </> name <.> "output")
+    ("tests" </> "EndToEnd" </> name <.> "expected")
     runExample
     T.pack
   where

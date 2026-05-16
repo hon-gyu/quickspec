@@ -21,7 +21,7 @@ tests :: TestTree
 tests =
   goldenVsAction
     "DecisionTree"
-    ("tests" </> "golden" </> "DecisionTree" <.> "output")
+    ("tests" </> "DecisionTree" <.> "expected")
     (return output)
     T.pack
 

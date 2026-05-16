@@ -14,17 +14,18 @@
 
 module Main (main) where
 
-import Test.Tasty (defaultMain, testGroup)
-
 import qualified DecisionTree
 import qualified EndToEnd
+import Test.Tasty (defaultMain, testGroup)
 
 main :: IO ()
 main =
   defaultMain $
-    testGroup "tests"
-      [ EndToEnd.tests
-      , testGroup "component"
+    testGroup
+      "tests"
+      [ EndToEnd.tests,
+        testGroup
+          "internal"
           [ DecisionTree.tests
           ]
       ]
