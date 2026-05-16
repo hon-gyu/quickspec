@@ -8,8 +8,8 @@ typeRep (via Proxy)
 ==========
 TyCon Int
 TyCon List(TyCon Int)
-TyCon (,)(TyCon Int,TyCon Bool)
-Arrow(TyCon Int,TyCon Bool)
+TyCon (,)(TyCon Int,TyCon Bool) / (Int, Bool)
+Arrow(TyCon Int,TyCon Bool) / Int -> Bool
 
 type variables
 ==========
@@ -17,7 +17,15 @@ typeVar:            x0
 isTypeVar typeVar:  True
 isTypeVar Int:      False
 
-prettyShow vs show
+Dict
 ==========
-show:       Arrow(x0,x1)
-prettyShow: X -> Y
+isDictionary (Dict (Eq Int)):  True
+getDictionary (Dict (Eq Int)): Just "Eq Int"
+isDictionary Int:              False
+
+Value
+==========
+show (toValue (Identity 42)):        <<Int>>
+valueType:                           Int
+fromValue @Int  (matching type):     Just (Identity 42)
+fromValue @Bool (wrong type):        Nothing

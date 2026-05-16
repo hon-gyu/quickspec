@@ -140,12 +140,14 @@ test-suite tests
   other-modules:
     DecisionTree
     EndToEnd
+    TweeBase
     Type
     Utils
   ghc-options:      -W
   build-depends:
     base >= 4.7 && < 5,
     bytestring,
+    constraints,
     filepath,
     process,
     quickspec,

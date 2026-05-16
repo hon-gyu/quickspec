@@ -1,0 +1,29 @@
+terms (raw show / prettyShow)
+==========
+x0:  show=x0  pretty=X
+x1:  show=x1  pretty=Y
+Int:  show=TyCon Int  pretty=Int
+Int->Bool:  show=Arrow(TyCon Int,TyCon Bool)  pretty=Int -> Bool
+A->B:  show=Arrow(x0,x1)  pretty=X -> Y
+A->A:  show=Arrow(x0,x0)  pretty=X -> X
+
+match pat term  (one-sided: vars in pat bind to subterms of term)
+==========
+match A     Int          = {X -> Int}
+match A->B  Int->Bool    = {X -> Int, Y -> Bool}
+match A->A  Int->Bool    = Nothing
+match Int   A            = Nothing
+
+unify  (two-sided: vars on either side can bind)
+==========
+unify A     Int          = {X -> Int}
+unify A->B  Int->Bool    = {X -> Int, Y -> Bool}
+unify A->A  Int->Bool    = Nothing
+unify A->B  Int->A       = {X -> Int, Y -> Int}
+
+applying a substitution
+==========
+sub = unify (A->B) (Int->Bool) = {X -> Int, Y -> Bool}
+apply sub to (A->B):  Int -> Bool
+apply sub to (A->A):  Int -> Int
+apply sub to Char:    Char

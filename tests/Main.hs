@@ -16,6 +16,7 @@ module Main (main) where
 
 import qualified DecisionTree
 import qualified EndToEnd
+import qualified TweeBase
 import qualified Type
 import Test.Tasty (defaultMain, testGroup)
 
@@ -28,6 +29,7 @@ main =
         testGroup
           "internal"
           [ DecisionTree.tests,
-            Type.tests
+            Type.tests,
+            TweeBase.tests
           ]
       ]
